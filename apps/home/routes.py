@@ -21,17 +21,17 @@ from ..extensions import socketio
 
 camera = cv2.VideoCapture(0)
 # Load a sample picture and learn how to recognize it.
-prasanth_image = face_recognition.load_image_file("/home/prasanth_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/home/prasanth/emp.jpeg")
-prasanth_face_encoding = face_recognition.face_encodings(prasanth_image)[0]
+ramzi_image = face_recognition.load_image_file("/home/ramzi_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/home/ramzi/emp.jpeg")
+ramzi_face_encoding = face_recognition.face_encodings(ramzi_image)[0]
 
 # Load a second sample picture and learn how to recognize it.
-bradley_image = face_recognition.load_image_file("/home/prasanth_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/home/bradley/emp.jpg")
-bradley_face_encoding = face_recognition.face_encodings(bradley_image)[0]
+thasneem_image = face_recognition.load_image_file("/home/ramzi_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/home/thasneem/emp.jpg")
+thasneem_face_encoding = face_recognition.face_encodings(thasneem_image)[0]
 
 # Create arrays of known face encodings and their names
 known_face_encodings = [
-    prasanth_face_encoding,
-    bradley_face_encoding
+    ramzi_face_encoding,
+    thasneem_face_encoding
 ]
 
 known_face_names = [
@@ -98,7 +98,7 @@ def gen_frames(app):
                 print("visitor" in name)
                 if "visitor" in name:
                     semipath = "/static/assets/img/attendance/visitors/"+today
-                    directory = "/home/prasanth_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
+                    directory = "/home/ramzi_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
                     imageName =name+str(random.randrange(1, 1000000))+"_"+ currenttime.replace(":", "_")+'_.jpg'
 
                     if not os.path.exists(directory):
@@ -125,7 +125,7 @@ def gen_frames(app):
                             print ("Attendance Already Marked")
                         else:
                             semipath = "/static/assets/img/attendance/"+name+"/"+today
-                            directory = "/home/prasanth_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
+                            directory = "/home/ramzi_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
                             if not os.path.exists(directory):
                                 os.makedirs(directory)
                             employee = Employees.query.filter_by(employeecode=name).first()
@@ -139,7 +139,7 @@ def gen_frames(app):
                             db.session.commit()
 
                     semipath = "/static/assets/img/attendance/"+name+"/"+today
-                    directory = "/home/prasanth_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
+                    directory = "/home/ramzi_km/liveprojects/facedetector/argon-dashboard-flask-master/apps/"+semipath
                         
                     if not os.path.exists(directory):
                         os.makedirs(directory)
@@ -179,10 +179,10 @@ def index():
     
     if not employee1:
         employee1 = Employees(employeecode="emp001",
-                              email="prasanth@gmail.com",
-                              name="Prasanth K M", 
-                              imageurl="/static/assets/img/employees/emp001.jpg",
-                              designation="CTO")
+                              email="ramzi@gmail.com",
+                              name="Ramzi Rahman", 
+                              imageurl="/static/assets/img/employees/emp001.jpeg",
+                              designation="Project Engineer")
         db.session.add(employee1)
         db.session.commit()
     
@@ -190,10 +190,10 @@ def index():
     
     if not employee2:
         employee2 = Employees(employeecode="emp002",
-                              email="bradley@gmail.com",
-                              name="Bradley Kooper", 
-                              imageurl="/static/assets/img/employees/emp002.jpg",
-                              designation="CFO")
+                              email="thasneem@gmail.com",
+                              name="Thasneem Yousuf", 
+                              imageurl="/static/assets/img/employees/emp002.jpeg",
+                              designation="Accountant")
         db.session.add(employee2)
         db.session.commit()
  
