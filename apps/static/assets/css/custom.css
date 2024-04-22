@@ -1,0 +1,33 @@
+.visitors-height{
+  height: 300px;
+}
+    
+.visitors-width{
+  width: 200px;
+}
+
+.detected-image-height-lg{
+  height: 380px;
+}
+
+.detected-multiple-container-height-lg{
+  height: 800px;
+  overflow-y: scroll;
+}
+
+.detected-image-height-sm{
+  height: 280px;
+}
+
+.detected-image-card-sm{
+  height: 250px;
+}
+
+.overflow-x-scroll{
+  overflow-x: scroll;
+}
+
+.logo-xs{
+  width: 200px;
+} 
+

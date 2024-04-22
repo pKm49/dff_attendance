@@ -1,0 +1,539 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+
+      <div class="d-flex justify-content-start py-3">
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="ni ni-camera-compact"></i>
+            Camera 1
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Camera 1</a>
+            <a class="dropdown-item" href="#">Camera 2</a>
+            <a class="dropdown-item" href="#">Camera 3</a>
+          </div>
+        </div>
+
+        <!-- <div class="dropdown  ">
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+            <i class="bi bi-plus "></i> Add
+          </button>
+
+        </div> -->
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card bg-default">
+        <img id="big" src="{{url_for('home_blueprint.video_feed')}}" alt="" srcset="">
+      </div>
+    </div>
+    <div class="col-xl-6">
+      <div class=" d-flex flex-column w-100  p-1">
+        <h2 class=" mb-3  fw-bold text-light mb-0">Employee Tracking</h2>
+
+        <div id="employee-detection-empty" class="d-flex flex-column   w-100">
+          <div class="d-flex flex-wrap w-100 justify-content-start  ">
+            <div class="card  col-12 col-lg-7 detected-image-height-lg
+                bg-secondary border border-danger
+                overflow-hidden bg-body rounded-3 p-1">
+
+            </div>
+            <div class="d-none d-lg-block col-1">
+
+            </div>
+            <div
+              class="card col-12 col-lg-3 border border-danger  bg-secondary  detected-image-height-lg flex-grow-1  bg-body rounded-3 p-1">
+
+            </div>
+          </div>
+
+        </div>
+
+        <div id="employee-detection-single" class="d-none flex-column   w-100">
+          <div class="d-flex flex-wrap w-100 justify-content-start  ">
+            <div
+              class="card border border-success col-12 col-lg-7 detected-image-height-lg overflow-hidden bg-body rounded-3 p-1">
+              <img id="single-employee-detected-face" src="" class="w-100" alt="">
+
+            </div>
+            <div class="d-none d-lg-block col-1">
+
+            </div>
+            <div
+              class="card col-12 col-lg-3 border border-success  detected-image-height-lg flex-grow-1  bg-body rounded-3 p-1">
+
+            </div>
+          </div>
+          <div id="single-employee-id-card-data"
+            class="card mb-0 d-flex flex-row h-100   col-12 col-lg-8 align-items-center  bg-body rounded-3 p-3">
+            <div class="card mb-0 bg-secondary h-100 col-4 align-items-center bg-body
+                 rounded-3 p-1">
+              <img id="single-employee-id-card-image" src="" class="w-100" alt="">
+
+            </div>
+            <div class="d-flex col-8 h-100 pl-2 flex-column">
+
+              <div class="alert alert-success" role="alert">
+                <span class="fs-5">Attendance Marked</span>
+                <i class="ml-4 ni ni-check-bold"></i>
+
+              </div>
+
+
+              <div class="w-100 d-flex">
+                <div class="d-flex col-6 flex-column   justify-content-around">
+
+
+                  <div class="d-flex mb-2 align-items-start flex-column w-100 justify-content-between">
+
+                    <p class="   mb-0">Name </p>
+                    <h3 id="single-employee-id-card-name" class=" mb-2 fw-bold mb-0">Ahmed Kabeer </h3>
+                  </div>
+                  <div class="d-flex align-items-start  flex-column w-100 justify-content-between">
+
+                    <p class="   mb-0">Designation </p>
+                    <h3 id="single-employee-id-card-designation" class="  fw-bold mb-0">Sales Manager </h3>
+
+                  </div>
+                </div>
+                <div class="d-flex col-6 flex-column  justify-content-around">
+
+
+                  <div class="d-flex mb-2 align-items-start flex-column w-100 justify-content-between">
+
+                    <p class="   mb-0">Time in </p>
+                    <h3 id="single-employee-id-card-timein" class="  fw-bold mb-0">8:00 AM </h3>
+                  </div>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newcameramodal">
+                    View
+                  </button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="employee-detection-multiple" class="d-none  detected-multiple-container-height-lg flex-column  w-100">
+          <div class="d-flex flex-wrap w-100 detected-image-height-sm justify-content-start align-items-end">
+            <div class="card  mb-0 col-lg-3 h-100 overflow-hidden bg-body rounded-3 p-1">
+
+            </div>
+
+
+
+            <div class="d-flex px-1 col-lg-2 h-100">
+              <div class="card mb-0 w-100 h-100 flex-grow-1  bg-body rounded-3 p-1">
+
+              </div>
+            </div>
+
+
+            <div
+              class="card mb-0 d-flex flex-row  detected-image-card-sm col-lg-7 align-items-center  bg-body rounded-3 p-3">
+              <div class="card mb-0 bg-secondary h-100 col-4 align-items-center bg-body
+                   rounded-3 p-1">
+                <img src="/static/assets/img/brand/user.png" class="w-100" alt="">
+
+              </div>
+              <div class="d-flex col-8 h-100 pl-3 flex-column">
+
+                <div class="alert alert-success" role="alert">
+                  <span class="fs-5">Attendance Marked</span>
+                  <i class="ml-4 ni ni-check-bold"></i>
+
+                </div>
+
+                <div class="d-flex mb-1 align-items-start flex-column w-100 justify-content-between">
+
+                  <p class="   mb-0">Name & Designation </p>
+                  <h3 class=" mb-2 fw-bold mb-0">Ahmed Kabeer ( CTO )</h3>
+                </div>
+
+                <div class="w-100 d-flex">
+
+                  <div class="d-flex px-0 col-6 flex-column  justify-content-around">
+
+
+                    <div class="d-flex mb-0 align-items-start flex-column w-100 justify-content-between">
+
+                      <p class="   mb-0">Time in </p>
+                      <h3 class="  fw-bold mb-0">8:00 AM </h3>
+                    </div>
+
+                  </div>
+                  <div class="d-flex col-6 px-0 flex-column  justify-content-around">
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                      data-bs-target="#newcameramodal">
+                      View
+                    </button>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="d-flex flex-column pt-4 visitors-height w-100">
+
+        <div class="d-flex mb-3 justify-content-between">
+          <h2 class="  fw-bold text-primary">Visitors Tracking</h2>
+
+        </div>
+
+        <div class="d-flex align-items-center flex-grow-1 w-100">
+          <div id="visitors-tracking-container"
+            class="d-flex h-100 mx-2 align-items-center overflow-x-scroll pb-2 flex-grow-1 ">
+
+
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title" id="exampleModalLabel">Add New Camera</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Camera Name</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Enter Camera Name">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Camera URL</label>
+          <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Camera URL">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Connect Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+  integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script>
+ 
+  let employees = [];
+  let visitors = [];
+
+  const socket = io({ autoConnect: false });
+
+  socket.connect();
+
+  socket.on("connect", function () {
+    socket.emit("user_join", "username");
+    console.log("socket connected");
+  })
+
+  socket.on("detected", function (data) {
+
+    console.log("outside"); 
+    console.log(data["employees"]);
+    console.log(data["visitors"]);
+
+    if (data["employees"] != undefined  ) {
+
+ 
+
+      let tEmps = JSON.parse(data["employees"].toString());
+      console.log("tEmps");
+      console.log(tEmps);
+      for (let index = 0; index < tEmps.length; index++) {
+        console.log(tEmps[index]);
+        employees.push(tEmps[index]);
+      }
+ 
+
+      changeEmployeessDOM();
+
+    }
+
+
+     if (data["visitors"] != undefined ) {
+ 
+      let tVisitors = JSON.parse(data["visitors"].toString());
+      console.log("tVisitors");
+      console.log(tVisitors);
+      for (let index = 0; index < tVisitors.length; index++) {
+        console.log(tVisitors[index]);
+        visitors.push(tVisitors[index]);
+      }
+
+
+      changeVisitorsDOM();
+
+    }
+
+  })
+  setInterval((function () {
+    // do some stuff
+    if (employees.length != 0) {
+      employees.pop(); 
+      changeEmployeessDOM();
+    }
+    setTimeout(arguments.callee, 5000);
+  }), 5000);
+
+
+
+  async function changeEmployeessDOM() {
+
+    let detectedEmployeeDisplayContainerEmpty = document.getElementById("employee-detection-empty");
+    let detectedEmployeeDisplayContainerSingle = document.getElementById("employee-detection-single");
+    let detectedEmployeeDisplayContainerMultiple = document.getElementById("employee-detection-multiple");
+
+    console.log("changeEmployeessDOM called")
+    console.log(employees.length)
+
+    if (employees.length == 1) {
+
+      let myImage = document.getElementById("single-employee-detected-face");
+        let idCardImage = document.getElementById("single-employee-id-card-image");
+        let idCardName = document.getElementById("single-employee-id-card-name");
+        let idCardDesignation = document.getElementById("single-employee-id-card-designation");
+        let idCardTimein = document.getElementById("single-employee-id-card-timein");
+
+        myImage.src = employees[0]["attendanceimageurl"];
+        idCardImage.src = employees[0]['imageurl']; 
+        idCardName.innerHTML = employees[0]['name'];
+        idCardDesignation.innerHTML = employees[0]['designation'];
+        idCardTimein.innerHTML = employees[0]['time'];
+
+        detectedEmployeeDisplayContainerSingle.classList.add('d-flex'); // Add class
+        detectedEmployeeDisplayContainerSingle.classList.remove('d-none'); // Remove class
+        detectedEmployeeDisplayContainerEmpty.classList.add('d-none'); // Remove class
+        detectedEmployeeDisplayContainerEmpty.classList.remove('d-flex'); // Remove class
+        detectedEmployeeDisplayContainerMultiple.classList.add('d-none'); // Remove class
+        detectedEmployeeDisplayContainerMultiple.classList.remove('d-flex'); // Remove class
+
+
+    } else if (employees.length > 1) {
+
+      while (detectedEmployeeDisplayContainerMultiple.lastElementChild) {
+        detectedEmployeeDisplayContainerMultiple.removeChild(detectedEmployeeDisplayContainerMultiple.lastElementChild);
+      }
+      for (let index = 0; index < employees.length; index++) { 
+          // Parent Div
+          let parentDiv = document.createElement("div");
+          parentDiv.classList.add('d-flex', 'flex-wrap', 'mb-2', 'w-100', 'detected-image-height-sm', 'justify-content-start', 'align-items-end');
+
+
+          // detected image container
+          let imageContainerDiv = document.createElement("div");
+          imageContainerDiv.classList.add('card', 'mb-0', 'col-lg-3', 'h-100', 'overflow-hidden', 'bg-body', 'rounded-3', 'p-1');
+          // detected image 
+          let imageElement = document.createElement("img");
+          imageElement.classList.add('w-100', 'overflow-hidden');
+          imageElement.src = employees[index]["attendanceimageurl"];
+          imageContainerDiv.appendChild(imageElement);
+
+          // bodylang container
+          let bodyLangContainerDiv = document.createElement("div");
+          bodyLangContainerDiv.classList.add('d-flex', 'px-1', 'col-lg-2', 'h-100');
+          // body lang innerdiv
+          let bodyLangInnerContainerDiv = document.createElement("div");
+          bodyLangInnerContainerDiv.classList.add('card', 'mb-0', 'w-100', 'h-100', 'flex-grow-1', 'bg-body', 'rounded-3', 'p-1');
+          bodyLangContainerDiv.appendChild(bodyLangInnerContainerDiv);
+
+
+
+          let idCardContainerDiv = document.createElement("div");
+          idCardContainerDiv.classList.add('card', 'mb-0', 'd-flex', 'flex-row', 'detected-image-card-sm', 'col-lg-7', 'align-items-center', 'bg-body', 'rounded-3', 'p-3');
+
+          // detected image container
+          let idCardImageContainerDiv = document.createElement("div");
+          idCardImageContainerDiv.classList.add('card', 'mb-0', 'bg-secondary', 'h-100', 'col-4', 'align-items-center', 'bg-body', 'rounded-3', 'p-1');
+          // detected image 
+          let idCardImageElement = document.createElement("img");
+          idCardImageElement.classList.add('w-100', 'overflow-hidden');
+          idCardImageElement.src = employees[index]['imageurl']
+          idCardImageContainerDiv.appendChild(idCardImageElement);
+
+
+
+
+
+          //  id card content container
+          let idCardContentContainerDiv = document.createElement("div");
+          idCardContentContainerDiv.classList.add('d-flex', 'col-8', 'h-100', 'pl-3', 'flex-column');
+
+          // id card alert
+          let idCardContentAlertDiv = document.createElement("div");
+          idCardContentAlertDiv.classList.add('alert', 'alert-success');
+          idCardContentAlertDiv.setAttribute('role', 'alert')
+          let idCardContentAlertSpan = document.createElement("span");
+          idCardContentAlertSpan.classList.add('fs-5');
+          idCardContentAlertSpan.innerHTML = "Attendance Marked";
+          let idCardContentAlertIcon = document.createElement("i");
+          idCardContentAlertIcon.classList.add('ml-4', 'ni', 'ni-check-bold');
+          idCardContentAlertDiv.appendChild(idCardContentAlertSpan);
+          idCardContentAlertDiv.appendChild(idCardContentAlertIcon);
+
+          // idcard name and des
+          let idCardContentInfoDiv = document.createElement("div");
+          idCardContentInfoDiv.classList.add('d-flex', 'mb-1', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+          let idCardContentInfoNameKeyElement = document.createElement("p");
+          idCardContentInfoNameKeyElement.classList.add('mb-0');
+          idCardContentInfoNameKeyElement.innerHTML = "Name & Designation";
+          let idCardContentInfoNameValueElement = document.createElement("h3");
+          idCardContentInfoNameValueElement.classList.add('fw-bold', 'mb-0');
+          idCardContentInfoNameValueElement.innerHTML = employees[index]['name'] + " (" + employees[index]['designation'] + ") ";
+          idCardContentInfoDiv.appendChild(idCardContentInfoNameKeyElement);
+          idCardContentInfoDiv.appendChild(idCardContentInfoNameValueElement);
+
+          // idcard time and button
+
+          let idCardContentTimeButtonDiv = document.createElement("div");
+          idCardContentTimeButtonDiv.classList.add('w-100', 'd-flex');
+          let idCardContentTimeDiv = document.createElement("div");
+          idCardContentTimeDiv.classList.add('d-flex', 'px-0', 'col-6', 'mb-0', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+          let idCardContentTimeKeyElement = document.createElement("p");
+          idCardContentTimeKeyElement.classList.add('mb-0');
+          idCardContentTimeKeyElement.innerHTML = "Time in";
+          let idCardContentTimeViewElement = document.createElement("h3");
+          idCardContentTimeViewElement.classList.add('fw-bold', 'mb-0');
+          idCardContentTimeViewElement.innerHTML = employees[index]['time'];
+          idCardContentTimeDiv.appendChild(idCardContentTimeKeyElement);
+          idCardContentTimeDiv.appendChild(idCardContentTimeViewElement);
+
+          let idCardContentButtonDiv = document.createElement("div");
+          idCardContentButtonDiv.classList.add('d-flex', 'col-6', 'px-0', 'flex-column', 'justify-content-around');
+          let idCardContentButtonElement = document.createElement("button");
+          idCardContentButtonElement.classList.add('btn', 'btn-primary');
+          idCardContentButtonElement.innerHTML = "View";
+          idCardContentButtonDiv.appendChild(idCardContentButtonElement);
+
+          idCardContentTimeButtonDiv.appendChild(idCardContentTimeDiv);
+          idCardContentTimeButtonDiv.appendChild(idCardContentButtonDiv);
+
+
+
+          idCardContentContainerDiv.appendChild(idCardContentAlertDiv);
+          idCardContentContainerDiv.appendChild(idCardContentInfoDiv);
+          idCardContentContainerDiv.appendChild(idCardContentTimeButtonDiv);
+
+          idCardContainerDiv.appendChild(idCardImageContainerDiv);
+          idCardContainerDiv.appendChild(idCardContentContainerDiv);
+          parentDiv.append(imageContainerDiv);
+          parentDiv.append(bodyLangContainerDiv);
+          parentDiv.append(idCardContainerDiv);
+
+          detectedEmployeeDisplayContainerMultiple.append(parentDiv);
+         
+      }
+
+      detectedEmployeeDisplayContainerMultiple.classList.add('d-flex'); // Add class
+      detectedEmployeeDisplayContainerMultiple.classList.remove('d-none'); // Remove class
+      detectedEmployeeDisplayContainerEmpty.classList.add('d-none'); // Remove class
+      detectedEmployeeDisplayContainerEmpty.classList.remove('d-flex'); // Remove class
+      detectedEmployeeDisplayContainerSingle.classList.add('d-none'); // Remove class
+      detectedEmployeeDisplayContainerSingle.classList.remove('d-flex'); // Remove class
+
+
+    } else {
+      detectedEmployeeDisplayContainerEmpty.classList.add('d-flex'); // Add class
+      detectedEmployeeDisplayContainerEmpty.classList.remove('d-none'); // Remove class
+      detectedEmployeeDisplayContainerSingle.classList.remove('d-flex'); // Remove class
+      detectedEmployeeDisplayContainerSingle.classList.add('d-none'); // Remove class
+      detectedEmployeeDisplayContainerMultiple.classList.remove('d-flex'); // Remove class
+      detectedEmployeeDisplayContainerMultiple.classList.add('d-none'); // Remove class
+    }
+
+
+  }
+
+
+  async function changeVisitorsDOM(){
+
+    let detectedVIsitorsDisplayContainerMultiple = document.getElementById("visitors-tracking-container");
+    while (detectedVIsitorsDisplayContainerMultiple.lastElementChild) {
+      detectedVIsitorsDisplayContainerMultiple.removeChild(detectedVIsitorsDisplayContainerMultiple.lastElementChild);
+    }
+
+    for (let index = 0; index < visitors.length; index++) {
+
+ 
+      // detected image container
+      let visitorImageContainerDiv = document.createElement("div");
+
+      visitorImageContainerDiv.classList.add('card', 'mr-2', 'col-3', 'h-100', 'overflow-hidden', 'bg-body', 'rounded-3', 'p-1');
+      // detected image 
+      let visitorImageElement = document.createElement("img");
+      visitorImageElement.classList.add('w-100', 'overflow-hidden');
+      visitorImageElement.src = visitors[index]["imageurl"];
+      visitorImageContainerDiv.appendChild(visitorImageElement);
+
+      detectedVIsitorsDisplayContainerMultiple.appendChild(visitorImageContainerDiv);
+
+    }
+  }
+
+  async function reloadImg(url) {
+    await fetch(url, { cache: 'reload', mode: 'no-cors' })
+    document.body.querySelectorAll(`img[src='${url}']`)
+      .forEach(img => img.src = url)
+  }
+
+
+
+</script>
+{% endblock javascripts %}

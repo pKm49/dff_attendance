@@ -1,0 +1,56 @@
+<nav class="sidenav navbar navbar-vertical 
+ fixed-left  navbar-expand-xs navbar-light bg-white d-lg-none" id="sidenav-main">
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand d-flex justify-content-start" href="/">
+        <span class="avatar avatar-sm rounded-circle">
+          <img src="/static/assets/img/theme/team-4.jpg" class="navbar-brand-img"
+          alt="{ current_user.username }">
+        </span>
+         
+        <span class=" ml-2 mb-0 text-md  font-weight-bold">
+          {{ current_user.username }}
+        </span>
+      </a>
+ 
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
+              <i class="ni ni-camera-compact"></i>
+
+              <span class="nav-link-text">View Cameras</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'reports' in segment %} active {% endif %}" href="/reports.html">
+              <i class="ni ni-bullet-list-67"></i>
+
+              <span class="nav-link-text">View Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
+              <i class="ni ni-single-02"></i>
+
+              <span class="nav-link-text">My profile</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('authentication_blueprint.logout') }}">
+              <i class="ni ni-user-run text-red"></i>
+              <span class="nav-link-text">Logout</span>
+            </a>
+          </li>            
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
