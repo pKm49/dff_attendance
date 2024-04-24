@@ -18,8 +18,17 @@
     <div class="navbar-inner">
       <!-- Collapse -->
       <div class="collapse navbar-collapse" id="sidenav-collapse-main">
-        <!-- Nav items -->
+      <!-- Nav items -->
         <ul class="navbar-nav">
+          {% if 'index' in segment %}
+          <li class="nav-item">
+            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/reset_data">
+              <i class="ni ni-button-power"></i>
+
+              <span class="nav-link-text">Reset Demo</span>
+            </a>
+          </li>
+          {% endif %} 
           <li class="nav-item">
             <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
               <i class="ni ni-camera-compact"></i>
@@ -34,13 +43,7 @@
               <span class="nav-link-text">View Report</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
-              <i class="ni ni-single-02"></i>
-
-              <span class="nav-link-text">My profile</span>
-            </a>
-          </li>
+           
           
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('authentication_blueprint.logout') }}">

@@ -82,6 +82,7 @@
             </div>
             <div
               class="card col-12 col-lg-3 border border-success  detected-image-height-lg flex-grow-1  bg-body rounded-3 p-1">
+              <img id="single-employee-detected-pose" src="" class="w-100" alt="">
 
             </div>
           </div>
@@ -229,7 +230,7 @@
   </div>
 
 </div>
-
+<div class="toast-overlay" id="toast-overlay"></div>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -271,7 +272,7 @@
 <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
   integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 <script>
- 
+
   let employees = [];
   let visitors = [];
 
@@ -286,13 +287,13 @@
 
   socket.on("detected", function (data) {
 
-    console.log("outside"); 
+    console.log("outside");
     console.log(data["employees"]);
     console.log(data["visitors"]);
 
-    if (data["employees"] != undefined  ) {
+    if (data["employees"] != undefined) {
 
- 
+
 
       let tEmps = JSON.parse(data["employees"].toString());
       console.log("tEmps");
@@ -301,15 +302,15 @@
         console.log(tEmps[index]);
         employees.push(tEmps[index]);
       }
- 
+
 
       changeEmployeessDOM();
 
     }
 
 
-     if (data["visitors"] != undefined ) {
- 
+    if (data["visitors"] != undefined) {
+
       let tVisitors = JSON.parse(data["visitors"].toString());
       console.log("tVisitors");
       console.log(tVisitors);
@@ -327,11 +328,11 @@
   setInterval((function () {
     // do some stuff
     if (employees.length != 0) {
-      employees.pop(); 
+      employees.pop();
       changeEmployeessDOM();
     }
-    setTimeout(arguments.callee, 5000);
-  }), 5000);
+    setTimeout(arguments.callee, 20000);
+  }), 20000);
 
 
 
@@ -345,25 +346,27 @@
     console.log(employees.length)
 
     if (employees.length == 1) {
-
+      showToast(employees[0], 5000);
       let myImage = document.getElementById("single-employee-detected-face");
-        let idCardImage = document.getElementById("single-employee-id-card-image");
-        let idCardName = document.getElementById("single-employee-id-card-name");
-        let idCardDesignation = document.getElementById("single-employee-id-card-designation");
-        let idCardTimein = document.getElementById("single-employee-id-card-timein");
+      let myPoseImage = document.getElementById("single-employee-detected-pose");
+      let idCardImage = document.getElementById("single-employee-id-card-image");
+      let idCardName = document.getElementById("single-employee-id-card-name");
+      let idCardDesignation = document.getElementById("single-employee-id-card-designation");
+      let idCardTimein = document.getElementById("single-employee-id-card-timein");
 
-        myImage.src = employees[0]["attendanceimageurl"];
-        idCardImage.src = employees[0]['imageurl']; 
-        idCardName.innerHTML = employees[0]['name'];
-        idCardDesignation.innerHTML = employees[0]['designation'];
-        idCardTimein.innerHTML = employees[0]['time'];
+      myImage.src = employees[0]["attendanceimageurl"];
+      myPoseImage.src = employees[0]["poseimageurl"];
+      idCardImage.src = employees[0]['imageurl'];
+      idCardName.innerHTML = employees[0]['name'];
+      idCardDesignation.innerHTML = employees[0]['designation'];
+      idCardTimein.innerHTML = employees[0]['time'];
 
-        detectedEmployeeDisplayContainerSingle.classList.add('d-flex'); // Add class
-        detectedEmployeeDisplayContainerSingle.classList.remove('d-none'); // Remove class
-        detectedEmployeeDisplayContainerEmpty.classList.add('d-none'); // Remove class
-        detectedEmployeeDisplayContainerEmpty.classList.remove('d-flex'); // Remove class
-        detectedEmployeeDisplayContainerMultiple.classList.add('d-none'); // Remove class
-        detectedEmployeeDisplayContainerMultiple.classList.remove('d-flex'); // Remove class
+      detectedEmployeeDisplayContainerSingle.classList.add('d-flex'); // Add class
+      detectedEmployeeDisplayContainerSingle.classList.remove('d-none'); // Remove class
+      detectedEmployeeDisplayContainerEmpty.classList.add('d-none'); // Remove class
+      detectedEmployeeDisplayContainerEmpty.classList.remove('d-flex'); // Remove class
+      detectedEmployeeDisplayContainerMultiple.classList.add('d-none'); // Remove class
+      detectedEmployeeDisplayContainerMultiple.classList.remove('d-flex'); // Remove class
 
 
     } else if (employees.length > 1) {
@@ -371,114 +374,119 @@
       while (detectedEmployeeDisplayContainerMultiple.lastElementChild) {
         detectedEmployeeDisplayContainerMultiple.removeChild(detectedEmployeeDisplayContainerMultiple.lastElementChild);
       }
-      for (let index = 0; index < employees.length; index++) { 
-          // Parent Div
-          let parentDiv = document.createElement("div");
-          parentDiv.classList.add('d-flex', 'flex-wrap', 'mb-2', 'w-100', 'detected-image-height-sm', 'justify-content-start', 'align-items-end');
+      for (let index = 0; index < employees.length; index++) {
+        // Parent Div
+        let parentDiv = document.createElement("div");
+        parentDiv.classList.add('d-flex', 'flex-wrap', 'mb-2', 'w-100', 'detected-image-height-sm', 'justify-content-start', 'align-items-end');
 
+        showToast(employees[index], 5000);
 
-          // detected image container
-          let imageContainerDiv = document.createElement("div");
-          imageContainerDiv.classList.add('card', 'mb-0', 'col-lg-3', 'h-100', 'overflow-hidden', 'bg-body', 'rounded-3', 'p-1');
-          // detected image 
-          let imageElement = document.createElement("img");
-          imageElement.classList.add('w-100', 'overflow-hidden');
-          imageElement.src = employees[index]["attendanceimageurl"];
-          imageContainerDiv.appendChild(imageElement);
+        // detected image container
+        let imageContainerDiv = document.createElement("div");
+        imageContainerDiv.classList.add('card', 'mb-0', 'col-lg-3', 'h-100', 'overflow-hidden', 'bg-body', 'rounded-3', 'p-1');
+        // detected image 
+        let imageElement = document.createElement("img");
+        imageElement.classList.add('w-100', 'overflow-hidden');
+        imageElement.src = employees[index]["attendanceimageurl"];
+        imageContainerDiv.appendChild(imageElement);
 
-          // bodylang container
-          let bodyLangContainerDiv = document.createElement("div");
-          bodyLangContainerDiv.classList.add('d-flex', 'px-1', 'col-lg-2', 'h-100');
-          // body lang innerdiv
-          let bodyLangInnerContainerDiv = document.createElement("div");
-          bodyLangInnerContainerDiv.classList.add('card', 'mb-0', 'w-100', 'h-100', 'flex-grow-1', 'bg-body', 'rounded-3', 'p-1');
-          bodyLangContainerDiv.appendChild(bodyLangInnerContainerDiv);
-
-
-
-          let idCardContainerDiv = document.createElement("div");
-          idCardContainerDiv.classList.add('card', 'mb-0', 'd-flex', 'flex-row', 'detected-image-card-sm', 'col-lg-7', 'align-items-center', 'bg-body', 'rounded-3', 'p-3');
-
-          // detected image container
-          let idCardImageContainerDiv = document.createElement("div");
-          idCardImageContainerDiv.classList.add('card', 'mb-0', 'bg-secondary', 'h-100', 'col-4', 'align-items-center', 'bg-body', 'rounded-3', 'p-1');
-          // detected image 
-          let idCardImageElement = document.createElement("img");
-          idCardImageElement.classList.add('w-100', 'overflow-hidden');
-          idCardImageElement.src = employees[index]['imageurl']
-          idCardImageContainerDiv.appendChild(idCardImageElement);
+        // bodylang container
+        let bodyLangContainerDiv = document.createElement("div");
+        bodyLangContainerDiv.classList.add('d-flex', 'px-1', 'col-lg-2', 'h-100');
+        // body lang innerdiv
+        let bodyLangInnerContainerDiv = document.createElement("div");
+        bodyLangInnerContainerDiv.classList.add('card', 'mb-0', 'w-100', 'h-100', 'flex-grow-1', 'bg-body', 'rounded-3', 'p-1');
+        let imagePoseElement = document.createElement("img");
+        imagePoseElement.classList.add('w-100', 'overflow-hidden');
+        imagePoseElement.src = employees[index]["poseimageurl"];
+        bodyLangInnerContainerDiv.appendChild(imagePoseElement);
+        bodyLangContainerDiv.appendChild(bodyLangInnerContainerDiv);
 
 
 
+        let idCardContainerDiv = document.createElement("div");
+        idCardContainerDiv.classList.add('card', 'mb-0', 'd-flex', 'flex-row', 'detected-image-card-sm', 'col-lg-7', 'align-items-center', 'bg-body', 'rounded-3', 'p-3');
 
-
-          //  id card content container
-          let idCardContentContainerDiv = document.createElement("div");
-          idCardContentContainerDiv.classList.add('d-flex', 'col-8', 'h-100', 'pl-3', 'flex-column');
-
-          // id card alert
-          let idCardContentAlertDiv = document.createElement("div");
-          idCardContentAlertDiv.classList.add('alert', 'alert-success');
-          idCardContentAlertDiv.setAttribute('role', 'alert')
-          let idCardContentAlertSpan = document.createElement("span");
-          idCardContentAlertSpan.classList.add('fs-5');
-          idCardContentAlertSpan.innerHTML = "Attendance Marked";
-          let idCardContentAlertIcon = document.createElement("i");
-          idCardContentAlertIcon.classList.add('ml-4', 'ni', 'ni-check-bold');
-          idCardContentAlertDiv.appendChild(idCardContentAlertSpan);
-          idCardContentAlertDiv.appendChild(idCardContentAlertIcon);
-
-          // idcard name and des
-          let idCardContentInfoDiv = document.createElement("div");
-          idCardContentInfoDiv.classList.add('d-flex', 'mb-1', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
-          let idCardContentInfoNameKeyElement = document.createElement("p");
-          idCardContentInfoNameKeyElement.classList.add('mb-0');
-          idCardContentInfoNameKeyElement.innerHTML = "Name & Designation";
-          let idCardContentInfoNameValueElement = document.createElement("h3");
-          idCardContentInfoNameValueElement.classList.add('fw-bold', 'mb-0');
-          idCardContentInfoNameValueElement.innerHTML = employees[index]['name'] + " (" + employees[index]['designation'] + ") ";
-          idCardContentInfoDiv.appendChild(idCardContentInfoNameKeyElement);
-          idCardContentInfoDiv.appendChild(idCardContentInfoNameValueElement);
-
-          // idcard time and button
-
-          let idCardContentTimeButtonDiv = document.createElement("div");
-          idCardContentTimeButtonDiv.classList.add('w-100', 'd-flex');
-          let idCardContentTimeDiv = document.createElement("div");
-          idCardContentTimeDiv.classList.add('d-flex', 'px-0', 'col-6', 'mb-0', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
-          let idCardContentTimeKeyElement = document.createElement("p");
-          idCardContentTimeKeyElement.classList.add('mb-0');
-          idCardContentTimeKeyElement.innerHTML = "Time in";
-          let idCardContentTimeViewElement = document.createElement("h3");
-          idCardContentTimeViewElement.classList.add('fw-bold', 'mb-0');
-          idCardContentTimeViewElement.innerHTML = employees[index]['time'];
-          idCardContentTimeDiv.appendChild(idCardContentTimeKeyElement);
-          idCardContentTimeDiv.appendChild(idCardContentTimeViewElement);
-
-          let idCardContentButtonDiv = document.createElement("div");
-          idCardContentButtonDiv.classList.add('d-flex', 'col-6', 'px-0', 'flex-column', 'justify-content-around');
-          let idCardContentButtonElement = document.createElement("button");
-          idCardContentButtonElement.classList.add('btn', 'btn-primary');
-          idCardContentButtonElement.innerHTML = "View";
-          idCardContentButtonDiv.appendChild(idCardContentButtonElement);
-
-          idCardContentTimeButtonDiv.appendChild(idCardContentTimeDiv);
-          idCardContentTimeButtonDiv.appendChild(idCardContentButtonDiv);
+        // detected image container
+        let idCardImageContainerDiv = document.createElement("div");
+        idCardImageContainerDiv.classList.add('card', 'mb-0', 'bg-secondary', 'h-100', 'col-4', 'align-items-center', 'bg-body', 'rounded-3', 'p-1');
+        // detected image 
+        let idCardImageElement = document.createElement("img");
+        idCardImageElement.classList.add('w-100', 'overflow-hidden');
+        idCardImageElement.src = employees[index]['imageurl']
+        idCardImageContainerDiv.appendChild(idCardImageElement);
 
 
 
-          idCardContentContainerDiv.appendChild(idCardContentAlertDiv);
-          idCardContentContainerDiv.appendChild(idCardContentInfoDiv);
-          idCardContentContainerDiv.appendChild(idCardContentTimeButtonDiv);
 
-          idCardContainerDiv.appendChild(idCardImageContainerDiv);
-          idCardContainerDiv.appendChild(idCardContentContainerDiv);
-          parentDiv.append(imageContainerDiv);
-          parentDiv.append(bodyLangContainerDiv);
-          parentDiv.append(idCardContainerDiv);
 
-          detectedEmployeeDisplayContainerMultiple.append(parentDiv);
-         
+        //  id card content container
+        let idCardContentContainerDiv = document.createElement("div");
+        idCardContentContainerDiv.classList.add('d-flex', 'col-8', 'h-100', 'pl-3', 'flex-column');
+
+        // id card alert
+        let idCardContentAlertDiv = document.createElement("div");
+        idCardContentAlertDiv.classList.add('alert', 'alert-success');
+        idCardContentAlertDiv.setAttribute('role', 'alert')
+        let idCardContentAlertSpan = document.createElement("span");
+        idCardContentAlertSpan.classList.add('fs-5');
+        idCardContentAlertSpan.innerHTML = "Attendance Marked";
+        let idCardContentAlertIcon = document.createElement("i");
+        idCardContentAlertIcon.classList.add('ml-4', 'ni', 'ni-check-bold');
+        idCardContentAlertDiv.appendChild(idCardContentAlertSpan);
+        idCardContentAlertDiv.appendChild(idCardContentAlertIcon);
+
+        // idcard name and des
+        let idCardContentInfoDiv = document.createElement("div");
+        idCardContentInfoDiv.classList.add('d-flex', 'mb-1', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+        let idCardContentInfoNameKeyElement = document.createElement("p");
+        idCardContentInfoNameKeyElement.classList.add('mb-0');
+        idCardContentInfoNameKeyElement.innerHTML = "Name & Designation";
+        let idCardContentInfoNameValueElement = document.createElement("h3");
+        idCardContentInfoNameValueElement.classList.add('fw-bold', 'mb-0');
+        idCardContentInfoNameValueElement.innerHTML = employees[index]['name'] + " (" + employees[index]['designation'] + ") ";
+        idCardContentInfoDiv.appendChild(idCardContentInfoNameKeyElement);
+        idCardContentInfoDiv.appendChild(idCardContentInfoNameValueElement);
+
+        // idcard time and button
+
+        let idCardContentTimeButtonDiv = document.createElement("div");
+        idCardContentTimeButtonDiv.classList.add('w-100', 'd-flex');
+        let idCardContentTimeDiv = document.createElement("div");
+        idCardContentTimeDiv.classList.add('d-flex', 'px-0', 'col-6', 'mb-0', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+        let idCardContentTimeKeyElement = document.createElement("p");
+        idCardContentTimeKeyElement.classList.add('mb-0');
+        idCardContentTimeKeyElement.innerHTML = "Time in";
+        let idCardContentTimeViewElement = document.createElement("h3");
+        idCardContentTimeViewElement.classList.add('fw-bold', 'mb-0');
+        idCardContentTimeViewElement.innerHTML = employees[index]['time'];
+        idCardContentTimeDiv.appendChild(idCardContentTimeKeyElement);
+        idCardContentTimeDiv.appendChild(idCardContentTimeViewElement);
+
+        let idCardContentButtonDiv = document.createElement("div");
+        idCardContentButtonDiv.classList.add('d-flex', 'col-6', 'px-0', 'flex-column', 'justify-content-around');
+        let idCardContentButtonElement = document.createElement("button");
+        idCardContentButtonElement.classList.add('btn', 'btn-primary');
+        idCardContentButtonElement.innerHTML = "View";
+        idCardContentButtonDiv.appendChild(idCardContentButtonElement);
+
+        idCardContentTimeButtonDiv.appendChild(idCardContentTimeDiv);
+        idCardContentTimeButtonDiv.appendChild(idCardContentButtonDiv);
+
+
+
+        idCardContentContainerDiv.appendChild(idCardContentAlertDiv);
+        idCardContentContainerDiv.appendChild(idCardContentInfoDiv);
+        idCardContentContainerDiv.appendChild(idCardContentTimeButtonDiv);
+
+        idCardContainerDiv.appendChild(idCardImageContainerDiv);
+        idCardContainerDiv.appendChild(idCardContentContainerDiv);
+        parentDiv.append(imageContainerDiv);
+        parentDiv.append(bodyLangContainerDiv);
+        parentDiv.append(idCardContainerDiv);
+
+        detectedEmployeeDisplayContainerMultiple.append(parentDiv);
+
       }
 
       detectedEmployeeDisplayContainerMultiple.classList.add('d-flex'); // Add class
@@ -502,7 +510,7 @@
   }
 
 
-  async function changeVisitorsDOM(){
+  async function changeVisitorsDOM() {
 
     let detectedVIsitorsDisplayContainerMultiple = document.getElementById("visitors-tracking-container");
     while (detectedVIsitorsDisplayContainerMultiple.lastElementChild) {
@@ -511,7 +519,7 @@
 
     for (let index = 0; index < visitors.length; index++) {
 
- 
+
       // detected image container
       let visitorImageContainerDiv = document.createElement("div");
 
@@ -532,6 +540,117 @@
     document.body.querySelectorAll(`img[src='${url}']`)
       .forEach(img => img.src = url)
   }
+
+  const showToast = (employee = {},
+    duration = 5000) => {
+
+
+    let box = document.createElement("div");
+
+
+    let idCardContainerDiv = document.createElement("div");
+    idCardContainerDiv.classList.add('card', 'mb-0', "toast", 'd-flex', 'flex-row', 'detected-image-card-sm', 'col-lg-7', 'align-items-center', 'bg-body', 'rounded-3', 'p-3');
+
+    // detected image container
+    let idCardImageContainerDiv = document.createElement("div");
+    idCardImageContainerDiv.classList.add('card', 'mb-0', 'bg-secondary', 'h-100', 'col-4', 'align-items-center', 'bg-body', 'rounded-3', 'p-1');
+    // detected image 
+    let idCardImageElement = document.createElement("img");
+    idCardImageElement.classList.add('w-100', 'overflow-hidden');
+    idCardImageElement.src = employee['imageurl']
+    idCardImageContainerDiv.appendChild(idCardImageElement);
+
+
+
+
+
+    //  id card content container
+    let idCardContentContainerDiv = document.createElement("div");
+    idCardContentContainerDiv.classList.add('d-flex', 'col-8', 'h-100', 'pl-3', 'flex-column');
+
+    // id card alert
+    let idCardContentAlertDiv = document.createElement("div");
+    idCardContentAlertDiv.classList.add('alert', 'alert-success');
+    idCardContentAlertDiv.setAttribute('role', 'alert')
+    let idCardContentAlertSpan = document.createElement("span");
+    idCardContentAlertSpan.classList.add('fs-5');
+    idCardContentAlertSpan.innerHTML = "Attendance Marked";
+    let idCardContentAlertIcon = document.createElement("i");
+    idCardContentAlertIcon.classList.add('ml-4', 'ni', 'ni-check-bold');
+    idCardContentAlertDiv.appendChild(idCardContentAlertSpan);
+    idCardContentAlertDiv.appendChild(idCardContentAlertIcon);
+
+    // idcard name and des
+    let idCardContentInfoDiv = document.createElement("div");
+    idCardContentInfoDiv.classList.add('d-flex', 'mb-1', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+    let idCardContentInfoNameKeyElement = document.createElement("p");
+    idCardContentInfoNameKeyElement.classList.add('mb-0');
+    idCardContentInfoNameKeyElement.innerHTML = "Name & Designation";
+    let idCardContentInfoNameValueElement = document.createElement("h3");
+    idCardContentInfoNameValueElement.classList.add('fw-bold', 'mb-0');
+    idCardContentInfoNameValueElement.innerHTML = employee['name'] + " (" + employee['designation'] + ") ";
+    idCardContentInfoDiv.appendChild(idCardContentInfoNameKeyElement);
+    idCardContentInfoDiv.appendChild(idCardContentInfoNameValueElement);
+
+    // idcard time and button
+
+    let idCardContentTimeButtonDiv = document.createElement("div");
+    idCardContentTimeButtonDiv.classList.add('w-100', 'd-flex');
+    let idCardContentTimeDiv = document.createElement("div");
+    idCardContentTimeDiv.classList.add('d-flex', 'px-0', 'col-6', 'mb-0', 'align-items-start', 'flex-column', 'w-100', 'justify-content-between');
+    let idCardContentTimeKeyElement = document.createElement("p");
+    idCardContentTimeKeyElement.classList.add('mb-0');
+    idCardContentTimeKeyElement.innerHTML = "Time in";
+    let idCardContentTimeViewElement = document.createElement("h3");
+    idCardContentTimeViewElement.classList.add('fw-bold', 'mb-0');
+    idCardContentTimeViewElement.innerHTML = employee['time'];
+    idCardContentTimeDiv.appendChild(idCardContentTimeKeyElement);
+    idCardContentTimeDiv.appendChild(idCardContentTimeViewElement);
+
+    let idCardContentButtonDiv = document.createElement("div");
+    idCardContentButtonDiv.classList.add('d-flex', 'col-6', 'px-0', 'flex-column', 'justify-content-around');
+    let idCardContentButtonElement = document.createElement("button");
+    idCardContentButtonElement.classList.add('btn', 'btn-primary');
+    idCardContentButtonElement.innerHTML = "View";
+    idCardContentButtonDiv.appendChild(idCardContentButtonElement);
+
+    idCardContentTimeButtonDiv.appendChild(idCardContentTimeDiv);
+    idCardContentTimeButtonDiv.appendChild(idCardContentButtonDiv);
+
+
+
+    idCardContentContainerDiv.appendChild(idCardContentAlertDiv);
+    idCardContentContainerDiv.appendChild(idCardContentInfoDiv);
+    idCardContentContainerDiv.appendChild(idCardContentTimeButtonDiv);
+
+    idCardContainerDiv.appendChild(idCardImageContainerDiv);
+    idCardContainerDiv.appendChild(idCardContentContainerDiv);
+
+
+
+    let toastAlready =
+      document.body.querySelector(".toast");
+    if (!toastAlready) {
+      document.body.appendChild(idCardContainerDiv)
+    };
+  }
+
+  $(function () {
+
+    $('a#resetbutn').on('click', function (e) {
+      e.preventDefault();
+      employees = [];
+      visitors = [];
+      changeEmployeessDOM();
+      changeVisitorsDOM();
+      $.getJSON('/reset_data',
+        function (data) {
+
+          //do nothing
+        });
+      return false;
+    });
+  });
 
 
 

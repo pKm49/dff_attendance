@@ -59,7 +59,7 @@ class Employees(db.Model):
 
             setattr(self, property, value)
  
-    def serialize(self,time,attendanceimageurl):
+    def serialize(self,time,attendanceimageurl,poseimageurl):
        """Return object data in easily serializable format"""
        return {
            'id'         : self.id,
@@ -68,6 +68,7 @@ class Employees(db.Model):
            'email': self.email, 
            'imageurl': self.imageurl, 
            'attendanceimageurl': attendanceimageurl, 
+           'poseimageurl': poseimageurl, 
            'name': self.name, 
            'designation': self.designation, 
        }
